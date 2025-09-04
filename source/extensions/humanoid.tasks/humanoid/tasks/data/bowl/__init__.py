@@ -1,0 +1,1 @@
+from .bowl import BOWL_CFG

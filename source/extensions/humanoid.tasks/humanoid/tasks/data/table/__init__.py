@@ -1,0 +1,1 @@
+from .table import TABLE_CFG 

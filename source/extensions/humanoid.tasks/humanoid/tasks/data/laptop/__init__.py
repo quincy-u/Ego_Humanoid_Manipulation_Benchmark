@@ -1,0 +1,1 @@
+from .laptop import LAPTOP_CFG
