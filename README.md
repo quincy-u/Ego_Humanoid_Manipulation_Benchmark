@@ -8,8 +8,9 @@ Ruihan Yang<sup>1*</sup>, Qinxi Yu<sup>2*</sup>, Yecheng Wu<sup>3,4</sup>, Rui Y
 
 <sup>1</sup>UC San Diego / <sup>2</sup>UIUC / <sup>3</sup>MIT / <sup>4</sup>NVIDIA
 
-[Project Page](https://rchalyang.github.io/EgoVLA) / [Arxiv](https://arxiv.org/abs/2507.12440) / [Training code and eval](https://github.com/quincy-u/Ego_Humanoid_Manipulation_Benchmark)
+[Project Page](https://rchalyang.github.io/EgoVLA) / [Arxiv](https://arxiv.org/abs/2507.12440) / [Training code and eval](https://github.com/RchalYang/EgoVLA_Release)
 
+For training code and eval code, follow: https://github.com/RchalYang/EgoVLA_Release
 
 ## Getting Started
 
