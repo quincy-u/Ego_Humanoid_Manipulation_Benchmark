@@ -1,8 +1,15 @@
 # Isaac-Humanoid-Benchmark
-
-## Overview
-
 A diverse humanoid benchmark based on Isaac Lab and a testbed for manipulation policy generalization.
+## Overview
+This is the repo of simulation benchmark for our work:
+### EgoVLA: Learning Vision-Language-Action Models from Egocentric Human Videos
+
+Ruihan Yang<sup>1*</sup>, Qinxi Yu<sup>2*</sup>, Yecheng Wu<sup>3,4</sup>, Rui Yan<sup>1</sup>, Borui Li<sup>1</sup>, An-Chieh Cheng<sup>1</sup>, Xueyan Zou<sup>1</sup>, Yunhao Fang<sup>1</sup>, Xuxin Cheng<sup>1</sup>, Ri-Zhao Qiu<sup>1</sup>, Hongxu Yin<sup>4</sup>, Sifei Liu<sup>4</sup>, Song Han<sup>3,4</sup>, Yao Lu<sup>4</sup>, Xiaolong Wang<sup>1</sup>
+
+<sup>1</sup>UC San Diego / <sup>2</sup>UIUC / <sup>3</sup>MIT / <sup>4</sup>NVIDIA
+
+[Project Page](https://rchalyang.github.io/EgoVLA) / [Arxiv](https://arxiv.org/abs/2507.12440) / [Training code and eval](https://github.com/quincy-u/Ego_Humanoid_Manipulation_Benchmark)
+
 
 ## Getting Started
 
