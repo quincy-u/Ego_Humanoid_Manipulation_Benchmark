@@ -31,6 +31,7 @@ class BaseEnvCfg(DirectRLEnvCfg):
     sim: SimulationCfg = SimulationCfg(
         dt=1 / 120,
         render_interval=4,
+        physx=PhysxCfg(enable_ccd=True) # Enable global CCD, you also need to enable it per-object or enable the robot CCD.
     )
     terrain = TerrainImporterCfg(
         prim_path="/World/ground",
@@ -64,8 +65,8 @@ class BaseEnvCfg(DirectRLEnvCfg):
         height=360,
         width=640,
         data_types=["rgb", "distance_to_image_plane"],
-        spawn=sim_utils.FisheyeCameraCfg(
-            focal_length=8.0, focus_distance=400.0, horizontal_aperture=20.955, clipping_range=(0.1, 1.0e5)
+        spawn=sim_utils.PinholeCameraCfg(
+            projection_type="pinhole",focal_length=8,focus_distance=400.0,horizontal_aperture=20.955,clipping_range=(0.1, 1.0e5),
         ),
         offset=CameraCfg.OffsetCfg(pos=(0.09, 0.033, 0.65), rot=(0.66446, 0.24184, -0.24184, -0.664464), convention="opengl"),
     )
@@ -74,8 +75,8 @@ class BaseEnvCfg(DirectRLEnvCfg):
         height=360,
         width=640,
         data_types=["rgb", "distance_to_image_plane"],
-        spawn=sim_utils.FisheyeCameraCfg(
-            focal_length=8.0, focus_distance=400.0, horizontal_aperture=20.955, clipping_range=(0.1, 1.0e5)
+        spawn=sim_utils.PinholeCameraCfg(
+            projection_type="pinhole",focal_length=8,focus_distance=400.0,horizontal_aperture=20.955,clipping_range=(0.1, 1.0e5),
         ),
         offset=CameraCfg.OffsetCfg(pos=(0.09, -0.033, 0.65), rot=(0.66446, 0.24184, -0.24184, -0.664464), convention="opengl"),
     )
@@ -84,18 +85,18 @@ class BaseEnvCfg(DirectRLEnvCfg):
         height=720,
         width=1280,
         data_types=["rgb", "distance_to_image_plane"],
-        spawn=sim_utils.FisheyeCameraCfg(
-            focal_length=8.0, focus_distance=400.0, horizontal_aperture=20.955, clipping_range=(0.1, 1.0e5)
+        spawn=sim_utils.PinholeCameraCfg(
+            projection_type="pinhole",focal_length=8,focus_distance=400.0,horizontal_aperture=20.955,clipping_range=(0.1, 1.0e5),
         ),
-        offset=CameraCfg.OffsetCfg(pos=(0.09, 0.0, 1.7), rot=(0.66446, 0.24184, -0.24184, -0.664464), convention="opengl"),
+        offset=CameraCfg.OffsetCfg(pos=(0.09, 0.0, 1.7),rot=(0.66446, 0.24184, -0.24184, -0.664464),convention="opengl",),
     )
     left_hand_camera = CameraCfg(
         prim_path="/World/envs/env_.*/Robot/L_hand_base_link/left_hand_camera",
         height=720,
         width=1280,
         data_types=["rgb", "distance_to_image_plane"],
-        spawn=sim_utils.FisheyeCameraCfg(
-            focal_length=8.0, focus_distance=400.0, horizontal_aperture=20.955, clipping_range=(0.1, 1.0e5)
+        spawn=sim_utils.PinholeCameraCfg(
+            projection_type="pinhole",focal_length=8,focus_distance=400.0,horizontal_aperture=20.955,clipping_range=(0.1, 1.0e5),
         ),
         offset=CameraCfg.OffsetCfg(pos=(-0.1, 0.04, 0.0), rot=(-0.17705, -0.17705, 0.68458, 0.68458), convention="opengl"),
     )
@@ -104,8 +105,8 @@ class BaseEnvCfg(DirectRLEnvCfg):
         height=720,
         width=1280,
         data_types=["rgb", "distance_to_image_plane"],
-        spawn=sim_utils.FisheyeCameraCfg(
-            focal_length=8.0, focus_distance=400.0, horizontal_aperture=20.955, clipping_range=(0.1, 1.0e5)
+        spawn=sim_utils.PinholeCameraCfg(
+            projection_type="pinhole",focal_length=8,focus_distance=400.0,horizontal_aperture=20.955,clipping_range=(0.1, 1.0e5),
         ),
         offset=CameraCfg.OffsetCfg(pos=(-0.1, 0.04, 0.0), rot=(0.68458, -0.68458, -0.17705, 0.17705), convention="opengl"),
     )
@@ -210,8 +211,8 @@ class BaseEnv(DirectRLEnv):
     def _apply_action(self) -> None:
         self.actions *= self.cfg.action_scale
         self.actions[:] = torch.clamp(self.actions, self.robot_dof_lower_limits, self.robot_dof_upper_limits)
-        # self.robot.set_joint_position_target(self.actions)
-        self.robot.write_joint_state_to_sim(self.actions, torch.zeros_like(self.actions))
+        self.robot.set_joint_position_target(self.actions) # Using this to let CCD work, which can solve fast moving small parts tunneling issue.
+        # self.robot.write_joint_state_to_sim(self.actions, torch.zeros_like(self.actions)) # Directly set joint states without velocity. Don't use this if CCD is needed.
 
     def _get_dones(self) -> tuple[torch.Tensor, torch.Tensor]:
         time_out = self.episode_length_buf >= self.max_episode_length
